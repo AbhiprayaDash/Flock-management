@@ -1,0 +1,26 @@
+# Implementation status
+
+## Implemented in source
+
+- Responsive dashboard and multiple farm/shed/batch setup, explicit demo label and browser persistence.
+- Supabase email/password login, confirmation/reset request, password update, invitations accepted on matching email, organizations and roles.
+- Database RLS, worker shed assignments, private bucket policies, record validation, revision checks, audit for records and access edits.
+- Daily log drafts/validation, additive records/corrections, inventory events, sampled weights, feed deliveries, environment observations.
+- Derived inventory/feed/water/weight/FCR/ADG/density and data completeness; missing inputs suppress relevant metrics.
+- Editable example feed/lighting/pH/ammonia profiles, stage timeline, vaccine records, checkpoint records, health cases, treatment/withdrawal register.
+- Private image upload/signed access/deletion with Supabase configuration; demo deliberately does not upload.
+- Optional server-side text AI with consent/quota/JSON validation/fallback; no invented image results.
+- CSV and printable batch summary, Next.js build, Cloudflare/OpenNext and Vercel setup instructions.
+
+## Incomplete acceptance criteria / production work
+
+- Manager/veterinarian assignment scope is organization-wide; only workers are shed-scoped. Assignment management and full team/audit UI are pending.
+- Database migrations and live policies have not been executed in a Supabase project here. The opt-in isolation/storage test requires credentials. Browser/mobile interaction QA is pending because the environment lacks callable browser-control tools.
+- Structured AI image assessments, model adapters for images, durable AI assessment/human-review records and image quality checks are pending. Images are stored separately; capture category/timestamp/context are currently manual notes.
+- Comprehensive alert lifecycle/deduplication/history, configurable threshold UI, notification delivery, checkpoint recurrence, per-day aggregation and full same-age batch comparison are pending. Attention cards show scheduled pending records.
+- Validated breed/age/season performance curves, weighted biological quality scoring, confidence models, individual-weight input, matched-period consumption-per-bird, feed days remaining and full end-of-batch financial reporting are pending. No placeholder quality score is shown.
+- Profiles have example values only; temperature/humidity require an approved housing profile. The lighting example is not a legal or strain-specific target. No sourced breeder dataset is redistributed.
+- Structured treatment administrations/partial-cohort withdrawal tracking, marketing enforcement, paired atomic transfers and full inventory event reversal are pending.
+- API validation is strongest for logs, batches, inventory and treatments; additional database domain constraints and payload limits should be added before exposure to untrusted clients. Storage enforces MIME/size claims; image byte-level decoding/malware scanning is pending.
+- Dialog keyboard trapping, full screen-reader audit, end-to-end mobile/offline tests, retention automation, full PDF contents, standards/source administration, and automatic backup scheduling are pending.
+- No external service credentials or deployment account were supplied; source is not a live commissioned production system.

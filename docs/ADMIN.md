@@ -1,0 +1,14 @@
+# Administrator guide
+
+1. Configure Auth, run migrations, create organization/farm/shed/batch, check timezone and placement. All examples are review-required; no universal vaccine schedule or preventive antibiotic course is seeded.
+2. Invite users with the correct role. Workers need shed assignments in the database. Remove membership to revoke organization access. Review `audit` for record and membership changes. There is no general team editor or audit viewer yet; use the Supabase dashboard.
+3. Configure feed phases and source/version in an editable management profile. Have your integrator/veterinarian approve vaccine records with disease, route, dose, lot, expiry, cold-chain notes and evidence. A missed dose requires veterinary guidance.
+4. Record incremental feed/water and separate mortality/culls. Save drafts for low-connectivity interruptions. Drafts are device-local; there is **no offline production synchronization queue**. Clear drafts/device storage after shared-device use. Log timestamps and unit meanings consistently.
+5. Reconcile transfers in both source and destination batches with a shared reference. The events are not automatically paired/atomic across batches. Verify both sides before reporting.
+6. Treatments need veterinarian authorization, prescriber and withdrawal source. Leave unknown withdrawal days blank and obtain the actual approved label/protocol. Marketing eligibility is informational; manually prevent marketing unresolved/withdrawing birds.
+7. Upload only permitted photo formats, ≤5 MB. Images remain in a private bucket; signed links last five minutes. Owners can delete photos. Record capture context/category/history in checkpoint notes. Retention automation and structured photo metadata are pending; manually review and delete according to organization policy.
+8. Enable AI consent only after reviewing provider data use and obtaining organizational approval. No auto-prescriptions. Review AI output with actual evidence and seek clinical examination/testing as needed.
+9. Export CSV regularly; use Reports → Print / save PDF for a batch summary. CSV includes JSON data per record, preserving fields. Financial conclusions remain unavailable when cost data is incomplete.
+10. Back up PostgreSQL using the Supabase CLI/`pg_dump` with credentials supplied through your secret manager. Back up private Storage originals separately via authorized Storage API; database dumps alone do not include files. Keep encrypted backups, audit access and perform restore drills. Supabase free plan does not replace your backup strategy.
+
+Before real operations: execute the live isolation tests, manually verify every role, test a private image URL while signed out, exercise password reset, inspect concurrent correction behavior, and arrange veterinary validation. The shipped source has not passed browser QA or live database tests in this environment.
