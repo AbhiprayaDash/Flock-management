@@ -18,8 +18,8 @@ Open `http://localhost:3000`. Empty Supabase variables select demo mode. Demo ex
 
 ## Connect Supabase
 
-1. Create a Supabase project. Execute `supabase/migrations/001_core.sql` and then `002_contract_sop.sql` once, in that order using the SQL editor (or your migration runner). It creates organization membership, shed assignments, records, audit, invitations, AI quota tables and private storage policies.
-2. Copy the project URL and **anon/publishable** key into `.env.local`. Never give this app a service-role key; it uses the caller's JWT for all operations.
+1. Create a Supabase project. Execute `supabase/migrations/001_core.sql` then `002_contract_sop.sql`, then `003_daily_ratings.sql` once, in that order using the SQL editor (or your migration runner). It creates organization membership, shed assignments, records, audit, invitations, AI quota tables and private storage policies.
+2. Copy the project URL and **anon/publishable** key into `.env.local`. User records and photos always use the caller’s JWT. An optional server-only service-role key is supported solely for writing the shared AI-rating cache after batch authorization; never expose it as a public variable.
 3. Enable email/password Auth. Set Site URL and allowed redirect URLs to the local and production origins. Configure SMTP for reliable confirmations and password resets.
 4. Restart the app, create an account, confirm its email, and sign in. In Settings, create an organization, then farm, shed and batch. Placement is flock day 1 in the batch's IANA timezone.
 5. Create invitations in Settings. They expire in 7 days and are accepted by a signed-in, confirmed user with the exact email. This workflow does **not** send an invitation email. Share the ordinary app URL yourself.
@@ -62,3 +62,12 @@ Use the **Farm → Shed → Batch** selectors on every screen to browse active a
 The dashboard’s **Daily SOP checklist** saves completion per batch and local date. The example checklist follows flock age; the company-approved SOP takes precedence. The date picker allows review of earlier days. Completed batches show read-only SOP history. Unticking a task reopens it and does not erase its database audit. Checklist ticks never replace measured daily log readings.
 
 Existing Supabase installations must apply `supabase/migrations/002_contract_sop.sql` before using this release. This migration adds company pickup validation, batch/farm consistency and a unique index preventing duplicate SOP tasks for a batch/date. Historical sale events remain readable and are not rewritten. No live database migration was run in this session.
+
+
+## Fast daily entry and per-day ratings
+
+Daily entry now asks only for date, feed **consumed**, water intake, deaths, culls, optional average weight and notes. Advanced readings already saved remain intact. Existing offered-feed records are converted to consumed feed for display without changing their history. New consumed values are never reduced a second time by old remaining/wastage values.
+
+The **Daily records** table contains each flock day, including gaps. Same-day entries are summed; incomplete inputs remain blank. Ratings update from transparent rules as you type; after saving a daily record an authenticated installation requests an optional AI assessment of that day and its preceding three calendar days. Results have a rating column, explanation, evidence IDs, limitations, model and timestamp. Corrections invalidate dependent cached ratings.
+
+No key means rule-based guidance, not pretend AI. Configure the existing AI server variables and organization consent for AI. `003_daily_ratings.sql` creates a read-only-to-clients rating cache. An optional `SUPABASE_SERVICE_ROLE_KEY` lets the server persist generated ratings after authorization; without it AI ratings stay in a device-local cache. The server role key is never used to read user records or photos and never sent to browsers. Ten AI requests per organization/day are shared with other assessments. Ratings are advisory trend flags, not diagnostic probabilities, prescriptions or biological quality grades.

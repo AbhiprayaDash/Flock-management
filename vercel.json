@@ -4,6 +4,11 @@
   "installCommand": "npm ci",
   "buildCommand": "npm run build",
   "functions": {
-    "app/api/assess/route.ts": { "maxDuration": 40 }
+    "app/api/assess/route.ts": {
+      "maxDuration": 40
+    },
+    "app/api/daily-rating/route.ts": {
+      "maxDuration": 40
+    }
   }
 }

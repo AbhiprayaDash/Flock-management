@@ -11,3 +11,12 @@ The database atomically reserves at most 10 calls/organization/day (UTC). Each r
 Some providers offer model-specific free allowances (e.g. Gemini's OpenAI-compatible endpoint). Availability, geography, rate limits, data retention and billing eligibility vary by project. Check the provider console, select a supported text model and confirm JSON-mode compatibility. Do not assume a paid ChatGPT subscription supplies API access or that hosted inference will stay free.
 
 Image assessment is **not implemented**. Private originals can be uploaded and reviewed by a veterinarian. The app does not invent image findings or encourage untrained necropsy. A future image adapter must perform quality checks, use only authorized batch photos and record consent/evidence/model/human review.
+
+
+## Per-day rating column
+
+The compact daily form supplies immediate **rule-based preview** as fields change. AI runs after a saved entry, never on each keystroke. `/api/daily-rating` retrieves only the authorized batch's saved logs and inventory; it does not accept arbitrary client evidence. Same-day entries are aggregated, and the previous three actual calendar days form the baseline. Missing days do not become zero. Categories: No flags, Monitor, Needs attention, Limited data. They are trend labels, not health/quality grades. Rule flags use mortality ≥0.5% of initial placement, intake drop >20%, mortality above twice baseline (and >2 birds), and water/feed deviation >25%. Thresholds are transparent screening examples, not validated strain targets. Partial-day periods are explicitly identified as a limitation.
+
+The optional JSON model response cannot downgrade a rule-based Needs attention rating or override missing data with No flags. Failures use rules. AI is only called for saved days and counts toward the organization-wide ten-call daily cap, with 700 output tokens and 30-second timeout. Existing full health assessments retain their separate 1,200-token cap.
+
+`daily_ratings` has per-batch read policies and no client write policies. Only an optional server-side service-role writer stores model responses after the request's JWT and batch authorization succeed. Without that configuration, generated AI results are device-cached. Corrected day/baseline evidence changes the cache key and withholds stale ratings. Local caches and drafts on shared devices should be cleared on signout/device handoff. Consent remains required; demo does not send any data to a provider.

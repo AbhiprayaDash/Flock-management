@@ -1,0 +1,10 @@
+-- Optional shared AI rating cache. Clients can read only authorized batches; only the server service-role key can write.
+create table public.daily_ratings(org_id uuid not null references public.organizations,batch_id uuid not null,date date not null,assessment jsonb not null,primary key(batch_id,date),foreign key(batch_id,org_id) references public.records(id,org_id) on delete cascade);
+alter table public.daily_ratings enable row level security;
+create policy ratings_read on public.daily_ratings for select to authenticated using(exists(select 1 from public.records r where r.id=batch_id and r.org_id=daily_ratings.org_id and r.kind='batch'));
+-- Allow assigned workers to request automatic ratings after their logs. Other authorization still uses per-batch RLS.
+create or replace function public.reserve_ai(o uuid) returns boolean language plpgsql security definer set search_path=public as $$ declare n integer;begin if coalesce(org_role(o),'') not in ('owner','manager','worker','veterinarian') or not exists(select 1 from organizations where id=o and ai_consent) then return false;end if;insert into ai_usage(org_id,day,count) values(o,current_date,1) on conflict(org_id,day) do update set count=ai_usage.count+1 where ai_usage.count<10 returning count into n;return n is not null;end $$;
+-- Validate direct consumed-feed readings through database APIs as well as the application API.
+create function public.validate_consumed_feed() returns trigger language plpgsql set search_path=public as $$ begin if new.kind='log' and new.data ? 'feedConsumed' and new.data->'feedConsumed'<>'null'::jsonb and (jsonb_typeof(new.data->'feedConsumed')<>'number' or (new.data->>'feedConsumed')::numeric<0) then raise exception 'Feed consumed must be a non-negative number';end if;return new;end $$;
+create trigger validate_consumed_feed before insert or update on public.records for each row execute function public.validate_consumed_feed();
+revoke execute on function public.validate_consumed_feed() from public;

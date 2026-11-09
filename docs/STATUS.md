@@ -29,3 +29,8 @@
 ## Contract farming update
 
 Implemented direct Farm → Shed → Batch browsing with active/completed filters, company pickup register and contract fields, and a persistent daily SOP checklist on the dashboard. Company pickups are explicit inventory removals, not farmer sale transactions. Company receipts and pickup biomass appear in reports. Historical sale events remain supported for compatibility. SOP history is saved as audited checkpoint records with one task per batch/date; completed batches are read-only in the SOP interface. Database migration 002 is required for live persistence and concurrency protections.
+
+
+## Compact daily records and trend ratings
+
+Implemented essential-only entry with immediate rule-based preview, a row for every flock day, summed same-day readings, per-day rating explanations, authorized server-side AI after saving, fallback and evidence-sensitive invalidation. Optional migration 003 plus a server-only writer enables shared AI result storage; without that configuration model ratings are device-cached. Generic health case AI review remains separate. Supabase is connected. The private flock-photos bucket has been created with 5 MB limits and JPEG/PNG/WebP restrictions. The full FlockWise schema migration was blocked by automatic approval review pending explicit approval of the database and security changes. App environment variables remain unchanged until the schema and access policies are ready.
