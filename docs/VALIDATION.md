@@ -39,3 +39,7 @@ Auth logs confirmed repeated signup for an already confirmed email, plus an inva
 ## Immediate signup preparation
 
 The UI now requests only email/password and removes confirmation-resend controls. A live read of `/auth/v1/settings` still reported `mailer_autoconfirm=false`; the integration cannot update this setting. Signup is gated by a fresh settings check until the administrator disables confirmation. Native returned sessions enable immediate access. Private invitation-token migration was applied and transactionally verified: email-only grant blocked, legacy RPC blocked, wrong/reused tokens blocked, valid token accepted. No existing passwords were changed and no verification requirement is falsely reported as disabled.
+
+## First-farm workspace fix
+
+Fixed farm submission with an empty `org_id`. Farm setup now waits for memberships to load, reuses a valid selected or existing organization, and creates an owned organization for the first farm if none exists. Its returned UUID is used directly in the farm save, and retained for retries if the save fails. Invalid organization input is reported as an actionable workspace message instead of raw Zod JSON. Tests cover creation, reuse, RPC failure, malformed returned IDs, missing farm name and validation messages. All 44 applicable tests and the production build passed.
