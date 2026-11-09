@@ -10,3 +10,10 @@
 - No Supabase migration execution, live Auth/Storage tests, Cloudflare production deployment or veterinary validation: no external project/account configuration was supplied.
 
 See `STATUS.md` for functional gaps. Passing build/unit checks does not make this source a fully commissioned production system.
+
+## Contract farming, SOP and navigation update
+
+- `npm test`: 20 passed, 0 failed, 1 live Supabase integration test skipped for missing credentials.
+- New tests cover scoped farm/shed/batch selection, empty selection without cross-farm fallback, active/completed browsing, worker-visible references, checklist date and batch separation, age-based SOP tasks, company pickup inventory/FCR, demo upgrades, and rendered accessible controls.
+- Browser control is not exposed in this managed environment; no end-to-end browser test is claimed. React server-rendering checks verify the new checklist and selectors; TypeScript and optimized builds verify compilation.
+- Migration `002_contract_sop.sql` is supplied for live Supabase installations but was not executed here. The Vercel app remains explicitly demo-only until Supabase configuration is supplied.

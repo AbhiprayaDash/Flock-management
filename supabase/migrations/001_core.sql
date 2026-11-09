@@ -66,11 +66,11 @@ begin
  target=case when new.kind='batch' then new.id else new.batch_id end;
  perform pg_advisory_xact_lock(hashtextextended(target::text,0));
  if new.kind='log' and exists(select 1 from jsonb_each(new.data) e where e.key in ('mortality','culls') and e.value<>'null'::jsonb and mod((e.value::text)::numeric,1)<>0) then raise exception 'Losses must be whole birds';end if;
- if new.kind='inventory' and (coalesce(new.data->>'type','') not in ('placement','transfer_in','transfer_out','sale','removal') or coalesce((new.data->>'birds')::numeric,0)<=0 or mod((new.data->>'birds')::numeric,1)<>0) then raise exception 'Invalid inventory event';end if;
+ if new.kind='inventory' and (coalesce(new.data->>'type','') not in ('placement','transfer_in','transfer_out','company_pickup','sale','removal') or coalesce((new.data->>'birds')::numeric,0)<=0 or mod((new.data->>'birds')::numeric,1)<>0) then raise exception 'Invalid inventory event';end if;
  if new.kind='batch' then placed=(new.data->>'placed')::numeric;else select (data->>'placed')::numeric into placed from records where id=target;end if;
  if placed is null or placed<=0 or mod(placed,1)<>0 then raise exception 'Positive whole placement required';end if;
  select coalesce(sum(coalesce((d->>'mortality')::numeric,0)+coalesce((d->>'culls')::numeric,0)),0) into losses from (select data d from records where batch_id=target and kind='log' and id<>new.id union all select new.data where new.kind='log') q;
- select coalesce(sum(case when d->>'type' in ('placement','transfer_in') then (d->>'birds')::numeric else 0 end),0),coalesce(sum(case when d->>'type' in ('sale','transfer_out','removal') then (d->>'birds')::numeric else 0 end),0) into incoming,outgoing from (select data d from records where batch_id=target and kind='inventory' and id<>new.id union all select new.data where new.kind='inventory') q;
+ select coalesce(sum(case when d->>'type' in ('placement','transfer_in') then (d->>'birds')::numeric else 0 end),0),coalesce(sum(case when d->>'type' in ('company_pickup','sale','transfer_out','removal') then (d->>'birds')::numeric else 0 end),0) into incoming,outgoing from (select data d from records where batch_id=target and kind='inventory' and id<>new.id union all select new.data where new.kind='inventory') q;
  if placed+incoming-losses-outgoing<0 then raise exception 'Bird movements exceed inventory';end if;
  return new;
 end $$;

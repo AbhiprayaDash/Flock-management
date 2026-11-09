@@ -18,7 +18,7 @@ Open `http://localhost:3000`. Empty Supabase variables select demo mode. Demo ex
 
 ## Connect Supabase
 
-1. Create a Supabase project. Execute `supabase/migrations/001_core.sql` once using the SQL editor (or your migration runner). It creates organization membership, shed assignments, records, audit, invitations, AI quota tables and private storage policies.
+1. Create a Supabase project. Execute `supabase/migrations/001_core.sql` and then `002_contract_sop.sql` once, in that order using the SQL editor (or your migration runner). It creates organization membership, shed assignments, records, audit, invitations, AI quota tables and private storage policies.
 2. Copy the project URL and **anon/publishable** key into `.env.local`. Never give this app a service-role key; it uses the caller's JWT for all operations.
 3. Enable email/password Auth. Set Site URL and allowed redirect URLs to the local and production origins. Configure SMTP for reliable confirmations and password resets.
 4. Restart the app, create an account, confirm its email, and sign in. In Settings, create an organization, then farm, shed and batch. Placement is flock day 1 in the batch's IANA timezone.
@@ -48,6 +48,17 @@ Recommended compatible option for a commercial farm: **Cloudflare Workers with O
 4. Add the resulting HTTPS origin to Supabase Auth URL configuration. Test confirmations and reset redirects.
 5. Set `AI_API_KEY`, `AI_MODEL`, optionally `AI_BASE_URL` with `npx wrangler secret put NAME`. Deploy/restart after configuration changes.
 
-Vercel is also compatible: import this GitHub repository, choose Next.js, configure the environment variables and deploy. **Hobby is restricted to personal non-commercial use; a commercial farm must select a permitted plan.** No deployment has been performed by this source checkout; no hosting account or Supabase project credentials were provided.
+Vercel is also compatible: import this GitHub repository, choose Next.js, configure the environment variables and deploy. **Hobby is restricted to personal non-commercial use; a commercial farm must select a permitted plan.** The application is hosted on Vercel at https://flockwise-beige.vercel.app in labeled demo mode. Supabase project credentials are not configured. GitHub is not connected to Vercel; source deployments are currently made through the Vercel API.
 
 See [free-tier review](docs/HOSTING.md), [administrator guide](docs/ADMIN.md), [AI setup](docs/AI.md), [calculations](docs/CALCULATIONS.md), and [remaining work](docs/STATUS.md).
+
+
+## Contract farm workflow
+
+The company handles selling; the farmer manages flock care and records company collections. Use **Company pickups** to record actual collection date, birds, mean weight, collecting company, receipt, vehicle and supervisor. Pickups reduce inventory and their biomass is included in FCR. No company chicken-sale price is treated as farmer revenue. Optional growing-charge terms are stored on the batch; no unverified settlement is calculated.
+
+Use the **Farm → Shed → Batch** selectors on every screen to browse active and completed batches. A farm or shed without matching batches shows an empty state. Batch setup enforces the shed’s parent farm.
+
+The dashboard’s **Daily SOP checklist** saves completion per batch and local date. The example checklist follows flock age; the company-approved SOP takes precedence. The date picker allows review of earlier days. Completed batches show read-only SOP history. Unticking a task reopens it and does not erase its database audit. Checklist ticks never replace measured daily log readings.
+
+Existing Supabase installations must apply `supabase/migrations/002_contract_sop.sql` before using this release. This migration adds company pickup validation, batch/farm consistency and a unique index preventing duplicate SOP tasks for a batch/date. Historical sale events remain readable and are not rewritten. No live database migration was run in this session.

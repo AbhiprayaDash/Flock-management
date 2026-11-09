@@ -23,4 +23,9 @@
 - Structured treatment administrations/partial-cohort withdrawal tracking, marketing enforcement, paired atomic transfers and full inventory event reversal are pending.
 - API validation is strongest for logs, batches, inventory and treatments; additional database domain constraints and payload limits should be added before exposure to untrusted clients. Storage enforces MIME/size claims; image byte-level decoding/malware scanning is pending.
 - Dialog keyboard trapping, full screen-reader audit, end-to-end mobile/offline tests, retention automation, full PDF contents, standards/source administration, and automatic backup scheduling are pending.
-- No external service credentials or deployment account were supplied; source is not a live commissioned production system.
+- Vercel demo deployment is live; Supabase credentials are not configured, so this is not a commissioned production system.
+
+
+## Contract farming update
+
+Implemented direct Farm → Shed → Batch browsing with active/completed filters, company pickup register and contract fields, and a persistent daily SOP checklist on the dashboard. Company pickups are explicit inventory removals, not farmer sale transactions. Company receipts and pickup biomass appear in reports. Historical sale events remain supported for compatibility. SOP history is saved as audited checkpoint records with one task per batch/date; completed batches are read-only in the SOP interface. Database migration 002 is required for live persistence and concurrency protections.

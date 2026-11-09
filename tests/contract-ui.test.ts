@@ -1,0 +1,14 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import React from 'react';
+import {renderToStaticMarkup} from 'react-dom/server';
+import {DailySop} from '../components/daily-sop';
+import {CompanyPickups} from '../components/company-pickups';
+import {FarmBrowser} from '../components/farm-browser';
+import {demo} from '../lib/demo';
+import {browseWorkspace} from '../lib/workspace';
+const rows=demo();const batch=rows.find(r=>r.id==='batch-1')!;
+test('Dashboard SOP renders labeled checkboxes and date context without inventing completion',()=>{const html=renderToStaticMarkup(React.createElement(DailySop,{batch,rows:[],today:batch.data.placement,canWrite:true,busy:false,onToggle:async()=>{}}));assert.ok(html.includes('Daily SOP checklist'));assert.ok(html.includes('type="checkbox"'));assert.ok(html.includes('0 of 9 completed'));assert.ok(html.includes('SOP checklist date'));assert.ok(!html.includes('checked=""'))});
+test('Viewer SOP inputs are disabled',()=>{const html=renderToStaticMarkup(React.createElement(DailySop,{batch,rows:[],today:batch.data.placement,canWrite:false,busy:false,onToggle:async()=>{}}));assert.ok(html.includes('disabled=""'))});
+test('Farm browser provides direct farm/shed/batch controls and history filter',()=>{const noop=()=>{};const scope=browseWorkspace(rows,'farm-1','shed-1','','All');const html=renderToStaticMarkup(React.createElement(FarmBrowser,{...scope,status:'All',onFarm:noop,onShed:noop,onBatch:noop,onStatus:noop}));for(const label of ['Farm','Shed','Batch','Batch status'])assert.ok(html.includes(`aria-label="${label}"`));assert.ok(html.includes('Broiler Batch 023'));assert.ok(!html.includes('Riverside Batch 008'))});
+test('Company pickups use contractual language and do not display fabricated farmer sales revenue',()=>{const history=rows.find(r=>r.id==='demo-batch-history')!;const html=renderToStaticMarkup(React.createElement(CompanyPickups,{batch:history,rows:rows.filter(r=>r.batch_id===history.id),canWrite:true,onAdd:()=>{},onEdit:()=>{}}));assert.ok(html.includes('The company handles selling'));assert.ok(html.includes('DEMO-PICKUP-023'));assert.ok(html.includes('3,994'));assert.ok(!html.includes('Sales revenue'))});
