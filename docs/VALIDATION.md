@@ -25,3 +25,8 @@ See `STATUS.md` for functional gaps. Passing build/unit checks does not make thi
 - Next.js production build and type checks pass.
 - Tests cover direct/legacy consumed feed, multiple entries, missing/zero readings, daily baselines, escalation and anti-downgrade rules, correction invalidation, batch isolation, empty days, and the compact form.
 - Supabase private bucket created successfully. Full schema application was rejected by automatic approval review pending explicit database/security approval; no unrelated public tables were modified. Live login/upload/isolation tests are not claimed.
+
+
+## Connected Supabase verification
+
+After the user approved full setup, migrations 001–004 applied successfully to `mhcnpjopukekudvmduzu`. The bucket is private, max 5 MB, JPEG/PNG/WebP only. All new application tables have RLS. Transactional real-database tests passed own access, foreign-org record read/edit/insert denial, foreign-photo read/insert denial, log corrections plus audit, and denial of client-written AI caches; all test fixtures rolled back. Production Vercel URL and publishable-key variables are set. No service-role key or AI provider key was configured. Auth URL settings and a real-user browser/upload test remain outside this verification.

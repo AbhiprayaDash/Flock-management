@@ -2,7 +2,7 @@
 
 A Next.js 16 / TypeScript poultry management application for broiler farms. Uses Tailwind CSS, Supabase Auth/PostgreSQL/RLS/private Storage, and an optional server-only OpenAI-compatible text provider.
 
-**Delivery status:** runnable core implementation, not a fully commissioned farm system. Demo works without services and is visibly labeled. Production requires a Supabase project, migration, Auth URLs and deployment secrets. Read [known gaps](docs/STATUS.md) before production use.
+**Delivery status:** runnable core implementation, not a fully commissioned farm system. Demo works without services and is visibly labeled. Production requires a Supabase project, migration, Auth URLs and deployment secrets. The connected deployment uses real login and private storage. Read [known gaps](docs/STATUS.md) before production use.
 
 ## Run
 
@@ -18,7 +18,7 @@ Open `http://localhost:3000`. Empty Supabase variables select demo mode. Demo ex
 
 ## Connect Supabase
 
-1. Create a Supabase project. Execute `supabase/migrations/001_core.sql` then `002_contract_sop.sql`, then `003_daily_ratings.sql` once, in that order using the SQL editor (or your migration runner). It creates organization membership, shed assignments, records, audit, invitations, AI quota tables and private storage policies.
+1. Create a Supabase project. Execute `supabase/migrations/001_core.sql` then `002_contract_sop.sql`, then `003_daily_ratings.sql` and `004_rpc_permissions.sql` once, in that order using the SQL editor (or your migration runner). It creates organization membership, shed assignments, records, audit, invitations, AI quota tables and private storage policies.
 2. Copy the project URL and **anon/publishable** key into `.env.local`. User records and photos always use the caller’s JWT. An optional server-only service-role key is supported solely for writing the shared AI-rating cache after batch authorization; never expose it as a public variable.
 3. Enable email/password Auth. Set Site URL and allowed redirect URLs to the local and production origins. Configure SMTP for reliable confirmations and password resets.
 4. Restart the app, create an account, confirm its email, and sign in. In Settings, create an organization, then farm, shed and batch. Placement is flock day 1 in the batch's IANA timezone.
@@ -48,7 +48,7 @@ Recommended compatible option for a commercial farm: **Cloudflare Workers with O
 4. Add the resulting HTTPS origin to Supabase Auth URL configuration. Test confirmations and reset redirects.
 5. Set `AI_API_KEY`, `AI_MODEL`, optionally `AI_BASE_URL` with `npx wrangler secret put NAME`. Deploy/restart after configuration changes.
 
-Vercel is also compatible: import this GitHub repository, choose Next.js, configure the environment variables and deploy. **Hobby is restricted to personal non-commercial use; a commercial farm must select a permitted plan.** The application is hosted on Vercel at https://flockwise-beige.vercel.app in labeled demo mode. Supabase project credentials are not configured. GitHub is not connected to Vercel; source deployments are currently made through the Vercel API.
+Vercel is also compatible: import this GitHub repository, choose Next.js, configure the environment variables and deploy. **Hobby is restricted to personal non-commercial use; a commercial farm must select a permitted plan.** The application is hosted on Vercel at https://flockwise-beige.vercel.app with Supabase Auth, organization records and private photo storage connected. Local runs without Supabase variables still use labeled demo mode. GitHub is not connected to Vercel; source deployments are currently made through the Vercel API.
 
 See [free-tier review](docs/HOSTING.md), [administrator guide](docs/ADMIN.md), [AI setup](docs/AI.md), [calculations](docs/CALCULATIONS.md), and [remaining work](docs/STATUS.md).
 
@@ -71,3 +71,10 @@ Daily entry now asks only for date, feed **consumed**, water intake, deaths, cul
 The **Daily records** table contains each flock day, including gaps. Same-day entries are summed; incomplete inputs remain blank. Ratings update from transparent rules as you type; after saving a daily record an authenticated installation requests an optional AI assessment of that day and its preceding three calendar days. Results have a rating column, explanation, evidence IDs, limitations, model and timestamp. Corrections invalidate dependent cached ratings.
 
 No key means rule-based guidance, not pretend AI. Configure the existing AI server variables and organization consent for AI. `003_daily_ratings.sql` creates a read-only-to-clients rating cache. An optional `SUPABASE_SERVICE_ROLE_KEY` lets the server persist generated ratings after authorization; without it AI ratings stay in a device-local cache. The server role key is never used to read user records or photos and never sent to browsers. Ten AI requests per organization/day are shared with other assessments. Ratings are advisory trend flags, not diagnostic probabilities, prescriptions or biological quality grades.
+
+
+## Upload flock pictures
+
+Sign in, create your organization/farm/shed/batch in Settings if needed, then select that batch and open **Photo checkpoints → Upload image**. JPEG, PNG and WebP are accepted up to 5 MB. The `flock-photos` bucket is private; signed viewing links expire after five minutes. Owners can delete photos. Anonymous users and users from other organizations cannot read the originals. The production project is now connected; the sample browser data was not imported into the real database.
+
+Supabase Auth email/password signup and confirmation policy remains controlled by the project settings. Ensure the live origin is configured under [Auth URL configuration](https://supabase.com/dashboard/project/mhcnpjopukekudvmduzu/auth/url-configuration). The Supabase integration exposes database/storage migration tools but not an Auth URL configuration tool, so that setting was not changed from this session.

@@ -23,7 +23,7 @@
 - Structured treatment administrations/partial-cohort withdrawal tracking, marketing enforcement, paired atomic transfers and full inventory event reversal are pending.
 - API validation is strongest for logs, batches, inventory and treatments; additional database domain constraints and payload limits should be added before exposure to untrusted clients. Storage enforces MIME/size claims; image byte-level decoding/malware scanning is pending.
 - Dialog keyboard trapping, full screen-reader audit, end-to-end mobile/offline tests, retention automation, full PDF contents, standards/source administration, and automatic backup scheduling are pending.
-- Vercel demo deployment is live; Supabase credentials are not configured, so this is not a commissioned production system.
+- Vercel is connected to Supabase with private storage and organization policies. Clinical validation, browser QA, an AI provider and full production commissioning remain pending.
 
 
 ## Contract farming update
@@ -33,4 +33,4 @@ Implemented direct Farm → Shed → Batch browsing with active/completed filter
 
 ## Compact daily records and trend ratings
 
-Implemented essential-only entry with immediate rule-based preview, a row for every flock day, summed same-day readings, per-day rating explanations, authorized server-side AI after saving, fallback and evidence-sensitive invalidation. Optional migration 003 plus a server-only writer enables shared AI result storage; without that configuration model ratings are device-cached. Generic health case AI review remains separate. Supabase is connected. The private flock-photos bucket has been created with 5 MB limits and JPEG/PNG/WebP restrictions. The full FlockWise schema migration was blocked by automatic approval review pending explicit approval of the database and security changes. App environment variables remain unchanged until the schema and access policies are ready.
+Implemented essential-only entry with immediate rule-based preview, a row for every flock day, summed same-day readings, per-day rating explanations, authorized server-side AI after saving, fallback and evidence-sensitive invalidation. Optional migration 003 plus a server-only writer enables shared AI result storage; without that configuration model ratings are device-cached. Generic health case AI review remains separate. Supabase is connected. The private flock-photos bucket has been created with 5 MB limits and JPEG/PNG/WebP restrictions. After explicit user approval, FlockWise migrations and RPC hardening were applied and production Vercel values configured. The app now supports real login/shared records/private uploads; user-authenticated end-to-end upload testing remains pending.
