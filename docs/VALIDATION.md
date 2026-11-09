@@ -34,3 +34,8 @@ After the user approved full setup, migrations 001–004 applied successfully to
 ## Signup and recovery repair
 
 Auth logs confirmed repeated signup for an already confirmed email, plus an invalid-password sign-in; signup was not disabled and no Auth service health issue was reported. The UI now gives accurate existing-account guidance, supports confirmation resends and a dedicated recovery form, handles connection failures without a stuck button, and allows existing shorter passwords at sign-in. Recovery intent is captured before the SDK consumes the URL hash. Passwords are never trimmed, logged, overwritten by signup or changed without an authenticated recovery submission. Targeted mocked client and rendered UI tests verify these flows; no real reset email or password change was initiated by the agent.
+
+
+## Immediate signup preparation
+
+The UI now requests only email/password and removes confirmation-resend controls. A live read of `/auth/v1/settings` still reported `mailer_autoconfirm=false`; the integration cannot update this setting. Signup is gated by a fresh settings check until the administrator disables confirmation. Native returned sessions enable immediate access. Private invitation-token migration was applied and transactionally verified: email-only grant blocked, legacy RPC blocked, wrong/reused tokens blocked, valid token accepted. No existing passwords were changed and no verification requirement is falsely reported as disabled.

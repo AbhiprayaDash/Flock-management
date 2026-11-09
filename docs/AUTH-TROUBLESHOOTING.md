@@ -11,3 +11,12 @@ The signup screen also supports **Resend confirmation** for unconfirmed accounts
 Under Supabase Auth URL configuration, allow the production origin and `https://flockwise-beige.vercel.app/?reset=1`. Do not disable email verification or share passwords/API secrets in chat to work around login issues.
 
 Verification: auth logs showed repeated signup responses for an already confirmed email and an invalid-password sign-in; no database failure or disabled signup. Targeted tests cover existing-account guidance, email trimming without password mutation, signup versus password update separation, recovery redirects and matching passwords, existing shorter-password sign-in and explicit recovery rendering. Real email delivery and entering a new password remain actions for the account owner; no reset email was sent by the agent and no account password was changed.
+
+
+## Requested immediate email/password signup
+
+Signup now has only email and password. Confirmation and confirmation-resend controls are removed. With Supabase **Confirm email** disabled, native `signUp` returns a session and the app opens the workspace immediately. It does not change an existing account’s password.
+
+The connected Supabase tools do not expose hosted Auth configuration updates. Set **Authentication → Sign In / Providers → Email → Confirm email OFF** in the project dashboard. The last live check still showed confirmation enabled; this is a required remaining administrator step. The app checks the live setting before signup and does not send signup-confirmation emails while the required setting is pending.
+
+Private invite links now authorize farm membership. Matching an invited email alone cannot add a user to an organization. Owners create an invitation and share the generated one-time link privately; recipients sign in or create an account using that link and the invited email. The old email-only acceptance RPC is revoked. A live rolled-back test verified that email alone and wrong/reused tokens cannot grant membership, while a valid token grants only the invited role.
