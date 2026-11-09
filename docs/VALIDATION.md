@@ -30,3 +30,7 @@ See `STATUS.md` for functional gaps. Passing build/unit checks does not make thi
 ## Connected Supabase verification
 
 After the user approved full setup, migrations 001–004 applied successfully to `mhcnpjopukekudvmduzu`. The bucket is private, max 5 MB, JPEG/PNG/WebP only. All new application tables have RLS. Transactional real-database tests passed own access, foreign-org record read/edit/insert denial, foreign-photo read/insert denial, log corrections plus audit, and denial of client-written AI caches; all test fixtures rolled back. Production Vercel URL and publishable-key variables are set. No service-role key or AI provider key was configured. Auth URL settings and a real-user browser/upload test remain outside this verification.
+
+## Signup and recovery repair
+
+Auth logs confirmed repeated signup for an already confirmed email, plus an invalid-password sign-in; signup was not disabled and no Auth service health issue was reported. The UI now gives accurate existing-account guidance, supports confirmation resends and a dedicated recovery form, handles connection failures without a stuck button, and allows existing shorter passwords at sign-in. Recovery intent is captured before the SDK consumes the URL hash. Passwords are never trimmed, logged, overwritten by signup or changed without an authenticated recovery submission. Targeted mocked client and rendered UI tests verify these flows; no real reset email or password change was initiated by the agent.
