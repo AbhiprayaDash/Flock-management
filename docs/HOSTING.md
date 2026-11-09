@@ -15,3 +15,11 @@ Supabase stores private originals; the application requests five-minute signed U
 AI is optional and separately billed by the configured provider. No provider-independent "free AI" allowance exists. Rules work without any API subscription. Configure provider-side spending ceilings. The application reserves ten requests/organization/day and caps text output at 1,200 tokens; that is not an exact currency budget.
 
 Set public Supabase variables before building. Set private AI values in Worker/Vercel secrets. Do not commit production environment files. Deployments should use HTTPS and Supabase Auth redirect allowlists.
+
+## Vercel deployment
+
+The repository includes `vercel.json` with Next.js detection, reproducible npm installation and the standard production build. The assessment function allows 40 seconds for the provider's 30-second timeout. Cloudflare output is excluded from Vercel uploads.
+
+Import `AbhiprayaDash/Flock-management`, select `main`, keep the repository root directory, and use Node.js 22 or newer. Without Supabase variables the deployed app is explicitly a browser-local demo. For persistent records set `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` before the deployment build, run the SQL migration in Supabase, and set the deployment origin as an allowed Auth redirect. Optional AI variables are server-side secrets. Redeploy after changing public variables.
+
+A Vercel account connection is required to create and manage a deployment from this session. The hosting plan must permit the intended commercial or personal use.
