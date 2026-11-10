@@ -1,3 +1,4 @@
+import {defaultPhases,ManagementPhase,phaseForDay} from './management-phases';
 import {RecordRow,flockDay} from './domain';
 export function batchStatus(batch:RecordRow){return batch.data.status==='Completed'?'Completed':'Active'}
 export function browseWorkspace(rows:RecordRow[],farmId:string,shedId:string,batchId:string,status='All'){
@@ -24,5 +25,6 @@ export const sopTasks=[
  {key:'brooding',title:'Review chick comfort and brooding equipment',detail:'Check heat distribution, chick access and crop fill; test generator readiness and backup water using approved procedures.',from:1,to:7},
  {key:'pickup',title:'Review company pickup readiness',detail:'Confirm the company plan and veterinarian-verified withdrawal status. Follow approved catching and transport procedures.',from:29}
 ];
-export function dailySop(batch:RecordRow,date:string,rows:RecordRow[]){const day=flockDay(batch.data.placement,date);return sopTasks.filter(t=>day>=t.from&&(!t.to||day<=t.to)).map(task=>({...task,record:rows.find(r=>r.kind==='checkpoint'&&r.batch_id===batch.id&&r.data.source==='daily_sop'&&r.data.sopKey===task.key&&r.data.due===date)}))}
+export function dailySop(batch:RecordRow,date:string,rows:RecordRow[],phases:ManagementPhase[]=defaultPhases){const phase=phaseForDay(phases,flockDay(batch.data.placement,date));return (phase?.tasks??[]).map(task=>{const record=rows.find(r=>r.kind==='checkpoint'&&r.batch_id===batch.id&&r.data.source==='daily_sop'&&r.data.sopKey===task.key&&r.data.due===date);return {...task,title:record?.data.name??task.title,detail:record?.data.sopDetail??task.detail,record}})}
+
 export function isCompanyPickup(row:RecordRow){return row.kind==='inventory'&&['company_pickup','sale'].includes(row.data.type)}
