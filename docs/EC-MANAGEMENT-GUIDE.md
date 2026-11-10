@@ -47,3 +47,7 @@ The recording checklist asks for flock age, date/time, lighting period, location
 Sources include Aviagen chick behavior guidance, Mississippi State heat/water/winter references, USDA APHIS signs of illness, Extension Poultry general signs, and Merck neurological/respiratory disease guidance. Reference links appear per pattern. The organization owner can customize the library in the existing Management Guide editor, with validated text lengths, unique IDs and HTTPS source links. Existing guides receive the library by default without losing custom seasonal or phase content.
 
 Combined verification: 83 tests passed, one optional isolation test skipped; production build passed. No clinical diagnosis accuracy or video detection was tested or claimed.
+
+## Replace oxygen monitoring with temperature
+
+The Overview cards, daily reading form and batch-history column now show temperature (°C), ammonia and humidity. Old oxygen values remain in stored records for audit/export but are not converted into temperatures, shown as current measurements or used to generate oxygen warnings. Temperature uses the existing measured temperature field and high-temperature warning. The placement reference is approximately 30°C for whole-house brooding; later temperatures follow the strain/company age-specific program. A reading below the high-warning threshold is not labelled normal. Oxygen-reference editing is removed from the UI. Existing tests verify that actual temperatures appear and old oxygen values do not populate the replacement column.
