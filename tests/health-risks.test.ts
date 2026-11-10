@@ -1,0 +1,13 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import React from 'react';
+import {renderToStaticMarkup} from 'react-dom/server';
+import {healthRisks} from '../lib/health-risks';
+import {EarlyWarnings} from '../components/early-warnings';
+import {RecordRow} from '../lib/domain';
+const batch:RecordRow={id:'b',kind:'batch',data:{placement:'2026-11-10',placed:15000}};
+const log:RecordRow={id:'l',kind:'log',batch_id:'b',data:{date:'2026-11-10',periodHours:24,feedConsumed:10,water:100,mortality:100,culls:0}};
+test('Day-one mortality displays differential risks and immediate veterinary action',()=>{const r=healthRisks(batch,[log],'2026-11-10');assert.match(r[0].explanation,/omphalitis/);assert.match(r[0].action,/veterinarian now/);assert.ok(r.some(x=>x.title.includes('Low intake')));assert.ok(r.some(x=>x.action.includes('Do not restrict drinking water')))});
+test('Dashboard shows risks without AI and states that disease cannot be predicted',()=>{const html=renderToStaticMarkup(React.createElement(EarlyWarnings,{batch,rows:[log],today:'2026-11-10',onView:()=>{}}));assert.match(html,/Possible health risks/);assert.match(html,/cannot confirm a disease or predict/);assert.match(html,/omphalitis/);assert.match(html,/ICAR/)});
+test('Routine readings and foreign batches do not create disease warnings',()=>{const normal={...log,data:{...log.data,feedConsumed:34,water:75,mortality:0}};assert.deepEqual(healthRisks(batch,[normal],'2026-11-10'),[]);assert.deepEqual(healthRisks(batch,[{...log,batch_id:'other'}],'2026-11-10'),[])});
+test('Partial intake is not turned into disease risk and older birds do not get neonatal differentials',()=>{const partial={...log,data:{...log.data,periodHours:2,mortality:0}};assert.deepEqual(healthRisks(batch,[partial],'2026-11-10'),[]);const older={...log,data:{...log.data,date:'2026-12-01',openingBirdCount:15000}};assert.ok(!healthRisks(batch,[older],'2026-12-01').some(r=>r.explanation.includes('omphalitis')))});
