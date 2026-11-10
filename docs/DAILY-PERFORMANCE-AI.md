@@ -33,3 +33,5 @@ The result includes image quality, visible findings, possible infectious/noninfe
 ## Verification limits
 
 Unit tests and server-rendered controls cover calculations, authorization scope, malformed/provider failures, target edits, missing periods and urgent-alert protection. A live synthetic model probe checks provider access without farm or user data. The temporary probe requires a secret and expires automatically; it is not a public generation endpoint. Real-user clinical validation, provider-dashboard billing review and browser upload-to-assessment testing remain separate checks. See the release report for actual connection success or external setup blockers.
+
+Starting mid-batch: the optional **Verified birds at start of day** count can anchor a single day's assessment when earlier daily loss records are unavailable. It must be a verified count, not a guess, and does not silently replace inventory movement records. Subsequent complete daily records carry that anchor forward. Conflicting opening counts prevent a reliable comparison.
