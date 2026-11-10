@@ -83,3 +83,7 @@ Supabase Auth email/password signup and confirmation policy remains controlled b
 The requested signup policy is **email + password → immediate sign-in**, with no confirmation email. This requires turning off **Confirm email** under Supabase Auth Providers → Email. Until that setting is changed, the app blocks signup with an administrator-setup message instead of sending confirmation emails. No hosted Auth configuration update tool is exposed by the connected integration. Existing accounts still use their existing password; password recovery remains a separate email flow. Apply the timestamped `secure_invitation_acceptance` migration so membership is granted only by private invitation links.
 
 Adding your first farm now creates your owned business workspace automatically if you do not have one. You can still create or select additional organizations in Settings. Farm setup waits for memberships to load and never submits an empty organization ID.
+
+## Single-day performance and image AI
+
+Daily entry now captures reporting duration. Configure approved age-specific targets in Settings to assess a single day without a three-day history. The dashboard shows early warnings independently of AI. Photo checkpoints support an explicitly requested, consent-gated image triage with visible findings and possible causes, never a definitive diagnosis. See [performance and AI setup](docs/DAILY-PERFORMANCE-AI.md) for reference conventions, limits, privacy and verification status.

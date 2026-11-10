@@ -7,7 +7,7 @@ import {consumedFeed,metrics,logSchema,RecordRow} from '../lib/domain';
 import {DailyRecordForm} from '../components/daily-record-form';
 import {DailyRecords} from '../components/daily-records';
 const batch:RecordRow={id:'b',kind:'batch',data:{name:'Test batch',placement:'2026-01-01',placed:1000,initialWeight:.04,area:100,timezone:'Asia/Kolkata'}};
-const log=(id:string,date:string,patch:any={}):RecordRow=>({id,kind:'log',batch_id:'b',data:{date,feedConsumed:100,water:200,mortality:0,culls:0,...patch}});
+const log=(id:string,date:string,patch:any={}):RecordRow=>({id,kind:'log',batch_id:'b',data:{date,periodHours:24,reportingPeriod:'full',feedConsumed:100,water:200,mortality:0,culls:0,...patch}});
 const history=[1,2,3,4].map(i=>log(String(i),'2026-01-0'+i));
 test('Consumed feed is direct; historic offered feed still deducts remaining/wastage once',()=>{assert.equal(consumedFeed({feed:100,remaining:10,wastage:2}),88);assert.equal(consumedFeed({feedConsumed:90,feed:100,remaining:10,wastage:2}),90);assert.equal(consumedFeed({feedConsumed:null,feed:100}),null);assert.equal(metrics(batch.data,[log('a','2026-01-01',{feedConsumed:90})]).feed,90);assert.equal(logSchema.safeParse({date:'2026-01-01',feedConsumed:-1}).success,false)});
 test('Daily totals aggregate entries and preserve missing versus zero',()=>{const date='2026-01-01';const totals=dailyTotals([log('a',date,{feedConsumed:10,water:20,mortality:0}),log('b',date,{feedConsumed:15,water:null,mortality:0})],date);assert.equal(totals.feed,25);assert.equal(totals.water,null);assert.equal(totals.deaths,0);assert.equal(dailyTotals([],date).feed,null)});

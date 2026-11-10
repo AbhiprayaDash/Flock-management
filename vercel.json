@@ -9,6 +9,12 @@
     },
     "app/api/daily-rating/route.ts": {
       "maxDuration": 40
+    },
+    "app/api/ai-status/route.ts": {
+      "maxDuration": 40
+    },
+    "app/api/photo-assess/route.ts": {
+      "maxDuration": 40
     }
   }
 }
