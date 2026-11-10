@@ -32,6 +32,12 @@ The result includes image quality, visible findings, possible infectious/noninfe
 
 ## Verification limits
 
-Unit tests and server-rendered controls cover calculations, authorization scope, malformed/provider failures, target edits, missing periods and urgent-alert protection. A live synthetic model probe checks provider access without farm or user data. The temporary probe requires a secret and expires automatically; it is not a public generation endpoint. Real-user clinical validation, provider-dashboard billing review and browser upload-to-assessment testing remain separate checks. See the release report for actual connection success or external setup blockers.
+Unit tests and server-rendered controls cover calculations, authorization scope, malformed/provider failures, target edits, missing periods and urgent-alert protection. A live synthetic model probe checks provider access without farm or user data. The temporary secret-protected probe was removed after verification. Real-user clinical validation, provider-dashboard billing review and browser upload-to-assessment testing remain separate checks. See the release report for actual connection success or external setup blockers.
 
 Starting mid-batch: the optional **Verified birds at start of day** count can anchor a single day's assessment when earlier daily loss records are unavailable. It must be a verified count, not a guess, and does not silently replace inventory movement records. Subsequent complete daily records carry that anchor forward. Conflicting opening counts prevent a reliable comparison.
+
+## Live verification — 10 November 2026
+
+Production synthetic generation reached AI Gateway, which rejected it with `customer_verification_required`: account verification/payment-method setup is required before free credits can be used. AI is therefore configured but **not operational**. In the Vercel team dashboard, open AI Gateway and complete its requested account verification, then retry an assessment after explicitly enabling organization AI sharing. No payment method, paid plan, credit top-up or data-sharing consent was added automatically. Daily rule-based alerts continue to work. The photo workflow requires a successful vision-model request; it has not been clinically validated.
+
+Release verification: production build passed; 58 tests passed, one opt-in isolation test skipped. No browser upload-to-assessment check was performed.
