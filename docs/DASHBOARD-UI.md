@@ -1,0 +1,9 @@
+# Simplified dashboard and reminders
+
+Overview now leads with four flock metrics, keeps urgent warning reasons/actions visible, and puts a batch To-do list beside scheduled farm tasks. Temperature, ammonia and humidity retain visible reading cards and a direct Record readings action. Reference/history text, the SOP checklist and the feed chart expand on demand. The SOP summary shows completion counts. Duplicated checkpoint panels and decorative promotional content were removed from Overview, and navigation/controls/text have larger readable sizes with mobile layouts.
+
+To-do supports adding a reminder, an optional due date, completion/reopening, and removal from the list. These are batch-scoped team reminders, not private personal notes or push notifications. Completion is grouped separately; overdue dates are labelled. Removed items are archived in the record, preserving audit history. Persistence uses checkpoint records with source dashboard_todo and the existing organization/assignment RLS; authenticated API validation bounds the title/date/status. Owner/manager/assigned worker can edit; read-only roles see disabled completion controls and no mutation actions. Existing revision checks handle concurrent edits. Demo mode uses its existing browser persistence.
+
+SOP, environmental observations and reminders are filtered out of the unrelated Photo checkpoints register and agenda, keeping tasks in their intended sections. Health warnings preserve visible severity/action and put explanations/evidence behind a details expander. Record readings opens the SOP and condition form directly.
+
+Validation: 85 tests passed, one optional isolation test skipped; production build passed. Coverage includes reminder scope, ordering, validation, archive filtering and read-only/overdue/completed UI. Interactive browser testing was not performed in this environment.

@@ -1,0 +1,10 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import React from 'react';
+import {renderToStaticMarkup} from 'react-dom/server';
+import {todoSchema,batchTodos} from '../lib/todos';
+import {TodoList} from '../components/todo-list';
+import {RecordRow} from '../lib/domain';
+const row=(id:string,patch:any={},batch='b'):RecordRow=>({id,kind:'checkpoint',batch_id:batch,data:{source:'dashboard_todo',name:'Check water tank',due:'2026-01-01',status:'Pending',archived:false,...patch}});
+test('Reminders validate text and dates and remain scoped to their batch',()=>{assert.equal(todoSchema.safeParse({...row('1').data,name:'   '}).success,false);assert.equal(todoSchema.safeParse({...row('1').data,due:'bad'}).success,false);assert.equal(todoSchema.parse({...row('1').data,name:' Check tank '}).name,'Check tank');const tasks=batchTodos([row('later',{due:'2026-01-03'}),row('done',{status:'Completed'}),row('due'),row('removed',{archived:true}),row('foreign',{},'other')],'b');assert.deepEqual(tasks.map(r=>r.id),['due','later','done'])});
+test('To-do UI exposes pending count, overdue date and disabled read-only controls',()=>{const html=renderToStaticMarkup(React.createElement(TodoList,{batchId:'b',rows:[row('1'),row('2',{status:'Completed'})],today:'2026-01-02',canWrite:false,onSave:async()=>{}}));assert.match(html,/1 open/);assert.match(html,/Overdue/);assert.match(html,/Completed \(1\)/);assert.match(html,/disabled/);assert.ok(!html.includes('Add reminder'));assert.ok(!html.includes('Remove Check'))});

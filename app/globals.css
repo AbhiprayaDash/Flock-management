@@ -24,3 +24,117 @@
 .guide-editor label { display: flex; flex-direction: column; gap: .4rem; margin-bottom: .8rem; }
 .guide-editor input, .guide-editor textarea { width: 100%; min-width: 0; box-sizing: border-box; }
 .guide-grid a { overflow-wrap: anywhere; }
+
+/* Readable, calmer workspace layout */
+body { font-size:14px; line-height:1.5; color:#273c32; background:#f4f7f5; }
+main { padding:28px 30px; max-width:1440px; }
+h1 { font-size:28px; letter-spacing:-.6px; }
+h2 { font-size:18px; }
+h3 { font-size:15px; }
+.panel { border-radius:14px; border:1px solid #e0e8e2; box-shadow:0 2px 8px #243e2d04; }
+.prose p { font-size:14px; line-height:1.75; color:#55665b; margin:10px 0; }
+.prose small { font-size:12px; line-height:1.6; }
+.prose summary { font-size:14px; cursor:pointer; padding:8px 0; font-weight:600; }
+.prose a { color:#2c6a4a; text-decoration:underline; text-underline-offset:3px; }
+.prose input,.prose select,.prose textarea { font-size:14px; }
+.panel-heading { padding:20px 22px; }
+.panel-heading p { font-size:13px; color:#6b796f; margin-top:4px; }
+.page-heading .eyebrow { display:none; }
+.page-heading p { font-size:14px; color:#69776d; }
+.primary,.secondary { font-size:13px; min-height:42px; border-radius:9px; }
+.nav-item,.sidebar nav .nav-item { font-size:14px; padding:10px 12px; min-height:44px; }
+.sidebar-farm select { font-size:13px; }
+.sidebar-bottom { padding-top:12px; }
+.user b { font-size:12px; overflow-wrap:anywhere; }
+.breadcrumbs { font-size:13px; }
+.farm-browser { padding:16px; margin-bottom:12px; }
+.browser-title { display:none; }
+.browser-fields label { font-size:12px; color:#5b6b60; }
+.browser-fields select { font-size:13px; margin-top:5px; }
+.batch-bar { margin-bottom:20px; }
+.batch-context { font-size:12px; }
+.dashboard-simple { display:grid; gap:20px; }
+.dashboard-simple .metrics { margin:0; gap:16px; }
+.metric { padding:20px; }
+.metric-title { font-size:13px; }
+.metric-value { font-size:28px; }
+.metric-foot { font-size:12px; color:#6c7b70; }
+.dashboard-priorities { display:grid; grid-template-columns:minmax(0,1.2fr) minmax(0,1fr); gap:20px; align-items:start; }
+.dashboard-priorities > * { min-width:0; }
+.dashboard-simple .attention { min-height:72px; }
+.dashboard-simple .attention b { font-size:14px; }
+.dashboard-simple .attention small { font-size:12px; }
+.dashboard-simple .guidance-note { display:none; }
+.dashboard-simple > .early-warnings { margin:0; padding:20px; }
+.dashboard-simple > .early-warnings .warning { padding:16px; border-radius:10px; margin-top:10px; }
+.dashboard-simple .early-warnings .warning p { font-size:13px; }
+.dashboard-simple .early-warnings small { font-size:12px; }
+.dashboard-simple > [aria-label="Daily air quality"] { margin:0; padding:22px; }
+.dashboard-simple > [aria-label="Daily air quality"] > p:first-of-type { font-size:13px; }
+.dashboard-simple .report-grid { grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; padding:12px 0; }
+.dashboard-simple .report-grid > div { padding:16px; border:1px solid #e3eae5; border-radius:10px; background:#fafcfb; }
+.dashboard-simple .report-grid small { font-size:12px; }
+.dashboard-simple .report-grid b { font-size:24px; margin-top:8px; }
+.dashboard-simple .report-grid p { font-size:12px; margin:6px 0; }
+.monitoring-details { border-top:1px solid #e5ebe6; margin-top:12px; padding-top:8px; }
+.dashboard-fold { border:1px solid #e0e8e2; border-radius:14px; background:white; overflow:hidden; }
+.dashboard-fold > summary { cursor:pointer; display:flex; justify-content:space-between; align-items:center; gap:14px; padding:20px 22px; list-style:none; }
+.dashboard-fold > summary::-webkit-details-marker { display:none; }
+.dashboard-fold > summary b { display:block; font-size:16px; }
+.dashboard-fold > summary small { display:block; margin-top:4px; font-size:13px; color:#708075; }
+.fold-action { font-size:13px; color:#3e7051; white-space:nowrap; }
+.dashboard-fold[open] > summary { border-bottom:1px solid #e5ebe6; background:#fafcfb; }
+.fold-content > .panel { border:0; box-shadow:none; border-radius:0; margin:0; }
+.fold-content .sop-task b { font-size:14px; }
+.fold-content .sop-task small,.fold-content .sop-context,.fold-content .sop-foot { font-size:12px; }
+.fold-content .sop-task { padding:16px; }
+.dashboard-links { display:flex; gap:10px; flex-wrap:wrap; }
+.todo-form { padding:0 22px 18px; }
+.todo-form label { display:flex; flex-direction:column; gap:6px; font-size:12px; color:#627266; }
+.todo-form input { width:100%; font-size:14px; min-height:43px; }
+.todo-add-row { display:flex; gap:10px; align-items:end; margin-top:10px; }
+.todo-add-row label { flex:1; min-width:0; }
+.todo-add-row button { flex-shrink:0; }
+.todo-items { list-style:none; margin:0; padding:0 22px; }
+.todo-item { display:flex; gap:12px; align-items:center; padding:14px 0; border-top:1px solid #e7ede8; }
+.todo-item label { display:flex; gap:12px; align-items:center; flex:1; min-width:0; cursor:pointer; }
+.todo-item input { width:20px; height:20px; min-height:20px; flex-shrink:0; accent-color:#34734d; }
+.todo-item b { font-size:14px; overflow-wrap:anywhere; }
+.todo-item small { display:block; font-size:12px; color:#7b877e; margin-top:3px; }
+.todo-item .todo-overdue { color:#aa5c36; }
+.todo-done b { text-decoration:line-through; color:#849086; }
+.todo-remove { font-size:12px; color:#7f6a5c; padding:8px 0 8px 8px; }
+.todo-empty { padding:0 22px 22px; color:#7b877e; font-size:13px; }
+.todo-panel > details { padding:0 22px 18px; }
+.todo-panel > details .todo-items { padding:0; }
+.todo-panel > details summary { padding:10px 0; cursor:pointer; font-size:13px; }
+.guide-grid { gap:18px; }
+.guide-grid .prose { margin:0; }
+.records-panel th,.records-panel td { font-size:13px; }
+.photo-review,.photo-review p { font-size:13px; }
+@media(max-width:1100px) { .dashboard-priorities { grid-template-columns:1fr; } }
+@media(max-width:650px) {
+ main { padding:20px 14px; }
+ h1 { font-size:25px; }
+ .page-heading { gap:14px; }
+ .page-heading p { font-size:13px; }
+ .heading-actions .primary { min-height:44px; }
+ .dashboard-simple { gap:16px; }
+ .dashboard-simple .metrics { grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+ .metric { padding:15px; }
+ .metric-title { font-size:12px; }
+ .metric-value { font-size:25px; }
+ .dashboard-simple .report-grid { grid-template-columns:1fr; }
+ .todo-form,.todo-items { padding-left:16px; padding-right:16px; }
+ .todo-add-row { flex-wrap:wrap; }
+ .todo-add-row label { min-width:150px; }
+ .dashboard-fold > summary { padding:18px 16px; }
+ .fold-content .sop-grid { grid-template-columns:1fr; }
+ .fold-action { font-size:12px; }
+ .prose { padding:18px; }
+ .top-actions { font-size:11px; }
+ .top-actions > .avatar { display:none; }
+}
+.monitoring-title { display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+@media(max-width:650px){.monitoring-title h2{font-size:17px}.monitoring-title .secondary{min-height:44px}}
+.todo-remove { min-height:44px; }
