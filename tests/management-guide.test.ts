@@ -1,0 +1,11 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import React from 'react';
+import {renderToStaticMarkup} from 'react-dom/server';
+import {defaultGuide,guideSchema,resolveGuide} from '../lib/management-guide';
+import {ManagementGuideView} from '../components/management-guide';
+import {DailySop} from '../components/daily-sop';
+import {RecordRow} from '../lib/domain';
+test('EC defaults include sources, validated schedules and safe editable links',()=>{assert.equal(guideSchema.safeParse(defaultGuide).success,true);assert.ok(defaultGuide.sections.length>=12);assert.equal(guideSchema.safeParse({...defaultGuide,schedule:{...defaultGuide.schedule,health:'25:00'}}).success,false);assert.equal(guideSchema.safeParse({...defaultGuide,sections:[{...defaultGuide.sections[0],sourceUrl:'javascript:alert(1)'}]}).success,false);const a=resolveGuide(null);a.sections[0].title='Changed';assert.notEqual(defaultGuide.sections[0].title,'Changed')});
+test('Default guide works without setup and editing is exposed only to admins',()=>{const props={guide:defaultGuide,custom:false,onSave:async()=>{}};const read=renderToStaticMarkup(React.createElement(ManagementGuideView,{...props,canEdit:false}));assert.match(read,/ready to use/);assert.match(read,/Cooling pads/);assert.ok(!read.includes('Edit guide &amp; SOP schedule'));const owner=renderToStaticMarkup(React.createElement(ManagementGuideView,{...props,canEdit:true}));assert.match(owner,/Edit guide &amp; SOP schedule/)});
+test('SOP displays recorded schedule and actual completion/reopening time in farm timezone',()=>{const batch:RecordRow={id:'b',kind:'batch',data:{name:'Test',placement:'2026-11-10',timezone:'Asia/Kolkata'}};const rows:RecordRow[]=[{id:'r',kind:'checkpoint',batch_id:'b',data:{source:'daily_sop',sopKey:'health',due:'2026-11-10',status:'Completed',scheduledTime:'13:45',completedAt:'2026-11-11T01:00:00Z'}},{id:'r2',kind:'checkpoint',batch_id:'b',updated_at:'2026-11-11T02:00:00Z',data:{source:'daily_sop',sopKey:'litter',due:'2026-11-10',status:'Pending'}}];const html=renderToStaticMarkup(React.createElement(DailySop,{batch,rows,today:'2026-11-10',canWrite:true,busy:false,onToggle:async()=>{}}));assert.match(html,/13:45/);assert.match(html,/Asia\/Kolkata/);assert.match(html,/11\/11\/2026/);assert.match(html,/Reopened/);assert.match(html,/do not backdate/)});
