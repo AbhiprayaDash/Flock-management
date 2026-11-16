@@ -87,7 +87,3 @@ Adding your first farm now creates your owned business workspace automatically i
 ## Single-day performance and image AI
 
 Daily entry now captures reporting duration. Configure approved age-specific targets in Settings to assess a single day without a three-day history. The dashboard shows early warnings independently of AI. Photo checkpoints support an explicitly requested, consent-gated image triage with visible findings and possible causes, never a definitive diagnosis. See [performance and AI setup](docs/DAILY-PERFORMANCE-AI.md) for reference conventions, limits, privacy and verification status.
-
-## Daily shed checkpoints
-
-The **Shed checkpoints** sidebar provides persistent timed readings, approved age profiles, deterministic alerts, staff actions/rechecks, offline drafts, browser push and history exports. Start with an admin-approved profile and assigned schedule. See [setup and operation](docs/SHED-CHECKPOINTS.md) for targets, access, background jobs, AI limits and verification.

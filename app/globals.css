@@ -138,28 +138,3 @@ h3 { font-size:15px; }
 .monitoring-title { display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
 @media(max-width:650px){.monitoring-title h2{font-size:17px}.monitoring-title .secondary{min-height:44px}}
 .todo-remove { min-height:44px; }
-
-.cp-workspace { display:grid; gap:20px; }
-.cp-workspace label,.checkpoint-form label { display:flex; flex-direction:column; gap:7px; font-size:13px; margin:10px 0; min-width:0; }
-.cp-workspace input,.cp-workspace select,.cp-workspace textarea,.checkpoint-form input,.checkpoint-form select,.checkpoint-form textarea { font-size:14px; min-height:42px; width:100%; }
-.cp-workspace details,.checkpoint-form details { padding:12px 0; border-top:1px solid #e2e9e3; }
-.cp-workspace summary,.checkpoint-form summary { cursor:pointer; font-weight:600; padding:8px 0; }
-.cp-instance-grid,.cp-chart-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; margin-top:16px; }
-.cp-instance,.cp-alert,.cp-chart,.cp-insight { border:1px solid #dce5df; border-radius:12px; padding:18px; margin:12px 0; overflow-wrap:anywhere; }
-.cp-critical,.cp-missed { background:#fff0ed; border-color:#e4aaa0; }
-.cp-warning,.cp-late { background:#fff8e8; border-color:#e5cd98; }
-.cp-completed { background:#f0f7ef; }
-.cp-alert pre { white-space:pre-wrap; font-size:12px; max-height:300px; overflow:auto; background:#f5f7f5; padding:12px; }
-.cp-notification { border-bottom:1px solid #e3e9e4; padding:10px 0; }
-.cp-chart svg { width:100%; height:auto; }
-.cp-chart small { font-size:12px; display:block; line-height:1.6; }
-.cp-workspace .check-inline,.checkpoint-form .check-inline { display:flex; flex-direction:row; align-items:center; gap:10px; }
-.check-inline input[type=checkbox] { width:20px; height:20px; min-height:20px; }
-.checkpoint-form { width:min(980px,96vw); max-width:980px; }
-.checkpoint-form fieldset,.checkpoint-config fieldset { border:1px solid #e2e9e4; border-radius:10px; padding:15px; margin:15px 0; min-width:0; }
-.checkpoint-form .measurement-row { display:grid; grid-template-columns:1.2fr 1fr 1fr; gap:12px; border-bottom:1px solid #e7ece8; padding:10px 0; }
-.checkpoint-config .form-grid { gap:12px; }
-.cp-workspace small { display:block; line-height:1.6; }
-.cp-history td { vertical-align:top; }
-@media(max-width:750px){.cp-instance-grid,.cp-chart-grid{grid-template-columns:1fr}.checkpoint-form .measurement-row{grid-template-columns:1fr}.cp-workspace .button-row{gap:8px;flex-wrap:wrap}.cp-workspace .report-grid{grid-template-columns:1fr}.checkpoint-form{padding:15px}.cp-instance,.cp-alert,.cp-chart{padding:14px}}
-@media print{.cp-history details{display:block}.cp-workspace nav,.cp-workspace button,.cp-workspace>section:not(.cp-history){display:none}.cp-history{display:block!important}.cp-chart,.cp-instance{break-inside:avoid}}
